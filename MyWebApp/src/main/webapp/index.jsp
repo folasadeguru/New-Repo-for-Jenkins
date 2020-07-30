@@ -4,7 +4,7 @@
 <title>Page Title</title>
 </head>
 <body>
-<h2>hey jenkins,Hello world. continue to be nice !</h2>
+<h2>hey jenkins,Hello world.just a quick lab !</h2>
 =======
 
 <h1>This is a Heading</h1>
