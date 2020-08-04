@@ -27,11 +27,11 @@ pipeline {
       nexusArtifactUploader(
       nexusVersion: 'nexus3',
       protocol: 'http',
-      nexusUrl: 'nexus_url:8081',
+      nexusUrl: '35.153.193.108:8081',
       groupId: 'myGroupId',
       version: '1.0-SNAPSHOT',
       repository: 'maven-snapshots',
-      credentialsId: 'fc0f1694-3036-41fe-b3e3-4c5d96fcfd26',
+      credentialsId: 'a56b5a42-c21a-4a0e-90c1-e2752824421d',
       artifacts: [
       [artifactId: 'MyWebApp',
       classifier: '',
@@ -43,42 +43,14 @@ pipeline {
     stage ('DEV Deploy') {
       steps {
       echo "deploying to DEV Env "
-      deploy adapters: [tomcat8(credentialsId: '268c42f6-f2f5-488f-b2aa-f2374d229b2e', path: '', url: 'http://localhost:8090')], contextPath: null, war: '**/*.war'
+      deploy adapters: [tomcat8(credentialsId: '63823fef-6f8e-4cf4-ab53-a4b6f8a94768', path: '', url: 'http://18.212.148.30:8090')], contextPath: null, war: '**/*.war'
       }
     }
     stage ('Slack Notification') {
       steps {
         echo "deployed to DEV Env successfully"
-        slackSend(channel:'your slack channel_name', message: "Job is successful, here is the info - Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        slackSend(channel:'devops201', message: "Job is successful, here is the info - Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
       }
     }
-    stage ('DEV Approve') {
-      steps {
-      echo "Taking approval from DEV Manager for QA Deployment"
-        timeout(time: 7, unit: 'DAYS') {
-        input message: 'Do you want to deploy?', submitter: 'admin'
-        }
-      }
-    }
-     stage ('QA Deploy') {
-      steps {
-        echo "deploying to QA Env "
-        deploy adapters: [tomcat8(credentialsId: '268c42f6-f2f5-488f-b2aa-f2374d229b2e', path: '', url: 'http://your_dns_name:8090')], contextPath: null, war: '**/*.war'
-        }
-    }
-    stage ('QA Approve') {
-      steps {
-        echo "Taking approval from QA manager"
-        timeout(time: 7, unit: 'DAYS') {
-        input message: 'Do you want to proceed to PROD?', submitter: 'admin,manager_userid'
-        }
-      }
-    }
-    stage ('Slack Notification for QA Deploy') {
-      steps {
-        echo "deployed to QA Env successfully"
-        slackSend(channel:'your slack channel_name', message: "Job is successful, here is the info - Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-      }
-    }  
   }
 }
