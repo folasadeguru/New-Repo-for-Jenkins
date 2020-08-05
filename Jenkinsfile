@@ -42,7 +42,7 @@ pipeline {
     }
     stage ('DEV Deploy') {
       steps {
-      echo "deploying to DEV Env "
+      echo "deploying to DEV Env"
       deploy adapters: [tomcat9(credentialsId: '63823fef-6f8e-4cf4-ab53-a4b6f8a94768', path: '', url: 'http://18.212.148.30:8090')], contextPath: null, war: '**/*.war'
       }
     }
