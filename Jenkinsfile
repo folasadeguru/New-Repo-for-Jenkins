@@ -43,13 +43,13 @@ pipeline {
     stage ('DEV Deploy') {
       steps {
       echo 'deploying to DEV Env'
-      deploy adapters: [tomcat9(credentialsId: '63823fef-6f8e-4cf4-ab53-a4b6f8a94768', path: '', url: 'http://18.212.148.30:8090')], contextPath: null, war: '**/*.war'
+      deploy adapters: [tomcat9(credentialsId: '63823fef-6f8e-4cf4-ab53-a4b6f8a94768', path: '', url: 'http://18.212.148.30:8080/')], contextPath: null, war: '**/*.war'
       }
     }
     stage ('Slack Notification') {
       steps {
-      echo "deployed to DEV Env successfully"
-      slackSend(channel:'devops201', message: "Job is successful, here is the info - Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+       echo "deployed to DEV Env successfully"
+        slackSend(channel:'devops201', message: "Job is successful, here is the info - Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
       }
     }
   }
